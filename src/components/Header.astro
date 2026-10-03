@@ -1,0 +1,209 @@
+---
+import Icon from './Icon.astro';
+import { profile } from '../data/profile';
+
+const links = [
+  { href: '#a-propos', label: 'À propos' },
+  { href: '#competences', label: 'Compétences' },
+  { href: '#projets', label: 'Projets' },
+  { href: '#contact', label: 'Contact' },
+];
+---
+
+<header class="header" data-header>
+  <div class="container bar">
+    <a href="#top" class="logo" aria-label={`${profile.name}, retour en haut`}>
+      <span class="logo-mark">{profile.initials}</span>
+      <span class="logo-text">{profile.name}</span>
+    </a>
+
+    <nav aria-label="Navigation principale">
+      <ul role="list" class="nav" id="nav" data-nav>
+        {links.map((l) => (
+          <li>
+            <a href={l.href} data-nav-link>
+              {l.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="Changer de thème">
+        <Icon name="sun" class="i-sun" />
+        <Icon name="moon" class="i-moon" />
+      </button>
+      <button
+        class="icon-btn menu-btn"
+        type="button"
+        data-menu-toggle
+        aria-controls="nav"
+        aria-expanded="false"
+        aria-label="Ouvrir le menu"
+      >
+        <Icon name="menu" class="i-menu" />
+        <Icon name="close" class="i-close" />
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    height: var(--header-h);
+    transition:
+      background-color 0.3s var(--ease),
+      border-color 0.3s var(--ease);
+    border-bottom: 1px solid transparent;
+  }
+  .header.is-scrolled {
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    border-bottom-color: var(--border);
+  }
+  .bar {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    min-width: 0;
+  }
+  .logo-mark {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    flex: none;
+    border-radius: 10px;
+    background: var(--accent-soft);
+    border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+  }
+  .logo-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .nav {
+    display: flex;
+    gap: 4px;
+  }
+  .nav a {
+    display: block;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    transition:
+      color 0.2s var(--ease),
+      background-color 0.2s var(--ease);
+  }
+  .nav a:hover,
+  .nav a.is-active {
+    color: var(--text);
+    background: var(--surface);
+  }
+  .nav a.is-active {
+    color: var(--accent);
+  }
+
+  .actions {
+    display: flex;
+    gap: 6px;
+  }
+  .icon-btn {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    color: var(--text-muted);
+    transition:
+      color 0.2s,
+      border-color 0.2s;
+  }
+  .icon-btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .icon-btn :global(svg) {
+    grid-area: 1 / 1;
+  }
+  :global([data-theme='dark']) .icon-btn :global(.i-moon),
+  :global([data-theme='light']) .icon-btn :global(.i-sun) {
+    display: none;
+  }
+  .menu-btn {
+    display: none;
+  }
+  .menu-btn :global(.i-close),
+  .menu-btn[aria-expanded='true'] :global(.i-menu) {
+    display: none;
+  }
+  .menu-btn[aria-expanded='true'] :global(.i-close) {
+    display: block;
+  }
+
+  @media (max-width: 420px) {
+    .logo-text {
+      display: none;
+    }
+  }
+  @media (max-width: 860px) {
+    .menu-btn {
+      display: grid;
+    }
+    .nav {
+      position: fixed;
+      inset: var(--header-h) 0 auto;
+      flex-direction: column;
+      gap: 0;
+      padding: 12px var(--gutter) 20px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      transform: translateY(-8px);
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        opacity 0.2s var(--ease),
+        transform 0.2s var(--ease),
+        visibility 0.2s;
+    }
+    .nav.is-open {
+      transform: none;
+      opacity: 1;
+      visibility: visible;
+    }
+    .nav a {
+      padding: 14px 4px;
+      border-radius: 0;
+      font-size: 1.05rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav a:hover,
+    .nav a.is-active {
+      background: none;
+    }
+  }
+</style>

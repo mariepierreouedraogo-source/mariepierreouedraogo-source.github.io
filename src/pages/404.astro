@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base title="Page introuvable">
+  <main id="contenu" class="container nf">
+    <p class="code">404</p>
+    <h1>Hôte injoignable</h1>
+    <p class="msg"><code>Request timed out.</code> Cette page n'existe pas ou a été déplacée.</p>
+    <a href={`${base}/`} class="btn btn-primary">Retour à l'accueil</a>
+  </main>
+</Base>
+
+<style>
+  .nf {
+    min-height: 100dvh;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 16px;
+    text-align: center;
+  }
+  .code {
+    font-family: var(--font-mono);
+    font-size: clamp(4rem, 15vw, 8rem);
+    line-height: 1;
+    color: var(--accent);
+  }
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+  }
+  .msg {
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+  .msg code {
+    font-family: var(--font-mono);
+    color: var(--accent-2);
+  }
+</style>

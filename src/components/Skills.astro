@@ -1,0 +1,119 @@
+---
+import Icon from './Icon.astro';
+import { pillars } from '../data/profile';
+---
+
+<section class="section alt" id="competences">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">02 · Compétences</p>
+      <h2 class="section-title">Trois domaines, un même profil</h2>
+      <p class="section-lead">
+        Je fais le lien entre les applications et l'infrastructure qui les fait fonctionner.
+      </p>
+    </div>
+
+    <div class="pillars">
+      {
+        pillars.map((p, i) => (
+          <article class="pillar card" data-reveal style={`transition-delay:${i * 90}ms`}>
+            <div class="icon">
+              <Icon name={p.icon} size={24} />
+            </div>
+            <h3>{p.title}</h3>
+            <p class="desc">{p.description}</p>
+            {p.groups.map((g) => (
+              <div class="group">
+                <h4>{g.title}</h4>
+                <ul role="list" class="tags">
+                  {g.items.map((item) => (
+                    <li class="tag">{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .alt {
+    background:
+      linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0 / 40px 40px,
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0 / 40px 40px,
+      var(--bg-soft);
+    border-block: 1px solid var(--border);
+  }
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .pillar {
+    position: relative;
+    padding: 28px;
+    overflow: hidden;
+  }
+  .pillar::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s var(--ease);
+  }
+  .pillar:hover {
+    border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+  }
+  .pillar:hover::before {
+    opacity: 1;
+  }
+  .icon {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+  h3 {
+    font-size: 1.3rem;
+  }
+  .desc {
+    margin-top: 10px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+  .group {
+    margin-top: 22px;
+  }
+  h4 {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-faint);
+    margin-bottom: 10px;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  @media (max-width: 960px) {
+    .pillars {
+      grid-template-columns: 1fr;
+      max-width: 640px;
+    }
+  }
+</style>

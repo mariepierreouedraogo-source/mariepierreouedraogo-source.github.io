@@ -1,0 +1,51 @@
+---
+import Icon from './Icon.astro';
+import { profile } from '../data/profile';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container bar">
+    <p>© {year} {profile.name}</p>
+    <p class="built">Site conçu avec Astro · hébergé sur GitHub Pages</p>
+    <a href="#top" class="up" aria-label="Retour en haut de page">
+      <Icon name="up" />
+    </a>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--border);
+    padding-block: 28px;
+    font-size: 0.88rem;
+    color: var(--text-faint);
+  }
+  .bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 24px;
+  }
+  .built {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+  }
+  .up {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    transition: all 0.2s;
+  }
+  .up:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-3px);
+  }
+</style>

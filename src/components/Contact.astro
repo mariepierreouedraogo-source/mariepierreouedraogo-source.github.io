@@ -1,0 +1,244 @@
+---
+import Icon, { type IconName } from './Icon.astro';
+import { profile } from '../data/profile';
+
+type Channel = { icon: IconName; label: string; value: string; href: string; brand?: string };
+
+const { socials } = profile;
+// Numéro lisible tiré du lien wa.me (ex. 22677615628 → +226 77 61 56 28).
+const waNumber = socials.whatsapp.replace(/\D/g, '').replace(/^(\d{3})(\d{2})(\d{2})(\d{2})(\d{2})$/, '+$1 $2 $3 $4 $5');
+const handle = (url: string) => '@' + url.replace(/\/+$/, '').split('/').pop()!.replace(/^@/, '');
+
+const direct = [
+  { icon: 'mail', label: 'E-mail', value: profile.email, href: `mailto:${profile.email}` },
+  socials.whatsapp && { icon: 'whatsapp', label: 'WhatsApp', value: waNumber, href: socials.whatsapp, brand: '#25d366' },
+  profile.phone && {
+    icon: 'phone',
+    label: 'Téléphone',
+    value: profile.phone,
+    href: `tel:${profile.phone.replace(/\s/g, '')}`,
+  },
+].filter(Boolean) as Channel[];
+
+const networks = [
+  socials.linkedin && { icon: 'linkedin', label: 'LinkedIn', value: 'Voir mon profil', href: socials.linkedin, brand: '#0a66c2' },
+  socials.github && { icon: 'github', label: 'GitHub', value: 'Voir mes dépôts', href: socials.github },
+  socials.facebook && { icon: 'facebook', label: 'Facebook', value: 'Voir ma page', href: socials.facebook, brand: '#1877f2' },
+  socials.tiktok && { icon: 'tiktok', label: 'TikTok', value: handle(socials.tiktok), href: socials.tiktok },
+  socials.x && { icon: 'x', label: 'X', value: handle(socials.x), href: socials.x },
+].filter(Boolean) as Channel[];
+
+const external = (href: string) => (href.startsWith('http') ? { target: '_blank', rel: 'noopener' } : {});
+---
+
+<section class="section" id="contact">
+  <div class="container grid">
+    <div data-reveal>
+      <p class="eyebrow">04 · Contact</p>
+      <h2 class="section-title">Travaillons ensemble</h2>
+      <p class="section-lead">
+        Un stage, un projet, une question ? Écrivez-moi : je réponds rapidement.
+      </p>
+
+      <ul role="list" class="channels">
+        {
+          direct.map((c) => (
+            <li>
+              <a href={c.href} class="channel card" style={c.brand && `--brand:${c.brand}`} {...external(c.href)}>
+                <span class="ch-icon">
+                  <Icon name={c.icon} />
+                </span>
+                <span>
+                  <span class="ch-label">{c.label}</span>
+                  <span class="ch-value">{c.value}</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      {
+        networks.length > 0 && (
+          <>
+            <h3 class="subhead">Réseaux sociaux</h3>
+            <ul role="list" class="channels networks">
+              {networks.map((c) => (
+                <li>
+                  <a href={c.href} class="channel card" style={c.brand && `--brand:${c.brand}`} {...external(c.href)}>
+                    <span class="ch-icon">
+                      <Icon name={c.icon} />
+                    </span>
+                    <span>
+                      <span class="ch-label">{c.label}</span>
+                      <span class="ch-value">{c.value}</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+    </div>
+
+    <form
+      class="form card"
+      data-reveal
+      data-contact-form
+      data-email={profile.email}
+      action={profile.formEndpoint || undefined}
+      method="post"
+    >
+      <div class="field">
+        <label for="name">Nom</label>
+        <input id="name" name="name" type="text" autocomplete="name" required />
+      </div>
+      <div class="field">
+        <label for="email">E-mail</label>
+        <input id="email" name="email" type="email" autocomplete="email" required />
+      </div>
+      <div class="field">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="5" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">
+        Envoyer <Icon name="send" />
+      </button>
+      <p class="form-status" role="status" data-form-status></p>
+    </form>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 6vw, 72px);
+    align-items: start;
+  }
+  .channels {
+    display: grid;
+    gap: 12px;
+    margin-top: 32px;
+  }
+  .channel {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 18px;
+  }
+  .channel:hover {
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    transform: translateX(4px);
+  }
+  .ch-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    flex: none;
+    border-radius: 12px;
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .channel:hover .ch-icon {
+    background: var(--brand, var(--accent));
+    color: #fff;
+  }
+  .ch-icon {
+    transition:
+      background-color 0.2s var(--ease),
+      color 0.2s var(--ease);
+  }
+  .subhead {
+    margin-top: 32px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-faint);
+  }
+  .networks {
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 14px;
+  }
+  @media (max-width: 400px) {
+    .networks {
+      grid-template-columns: 1fr;
+    }
+  }
+  .ch-label {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-faint);
+  }
+  .ch-value {
+    display: block;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+  }
+  @media (max-width: 400px) {
+    .ch-value {
+      font-size: 0.9rem;
+    }
+  }
+  .networks li:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .form {
+    display: grid;
+    gap: 18px;
+    padding: clamp(22px, 4vw, 32px);
+  }
+  .field {
+    display: grid;
+    gap: 6px;
+  }
+  label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+  input,
+  textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-strong);
+    background: var(--bg);
+    font-size: 1rem;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+  input:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .form .btn {
+    justify-self: start;
+  }
+  .form-status {
+    font-size: 0.9rem;
+    color: var(--accent);
+    min-height: 1.4em;
+  }
+  .form-status.is-error {
+    color: #f87171;
+  }
+
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
