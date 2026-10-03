@@ -39,7 +39,7 @@ src/
 
 ### GitHub Pages (en place)
 
-À chaque `git push` sur `main`, le workflow `.github/workflows/deploy.yml` reconstruit et publie le site sur `https://<ton-pseudo>.github.io`. L'URL et le chemin de base sont calculés automatiquement.
+À chaque `git push` sur `main`, le workflow `.github/workflows/deploy.yml` reconstruit et publie le site sur `https://<ton-pseudo>.github.io`. L'adresse du site (y compris un domaine personnalisé défini dans **Settings → Pages**) est lue automatiquement.
 
 ### Vercel (facultatif)
 

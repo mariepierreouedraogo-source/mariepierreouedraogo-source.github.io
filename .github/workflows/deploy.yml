@@ -23,18 +23,14 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - name: Calcul de l'URL du site
-        run: |
-          OWNER="${GITHUB_REPOSITORY_OWNER,,}"
-          REPO="${GITHUB_REPOSITORY#*/}"
-          echo "SITE=https://${OWNER}.github.io" >> "$GITHUB_ENV"
-          if [ "${REPO,,}" = "${OWNER}.github.io" ]; then
-            echo "BASE=/" >> "$GITHUB_ENV"
-          else
-            echo "BASE=/${REPO}" >> "$GITHUB_ENV"
-          fi
+      # Adresse réelle du site lue dans Settings → Pages (domaine personnalisé compris).
+      - id: pages
+        uses: actions/configure-pages@v5
       - run: npm ci
       - run: npm run build
+        env:
+          SITE: ${{ steps.pages.outputs.origin }}
+          BASE: ${{ steps.pages.outputs.base_path || '/' }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
