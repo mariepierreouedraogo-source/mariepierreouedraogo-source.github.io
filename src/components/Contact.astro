@@ -1,7 +1,6 @@
 ---
 import Icon, { type IconName } from './Icon.astro';
 import { profile } from '../data/profile';
-import { CONTACT_API } from 'astro:env/server';
 
 type Channel = { icon: IconName; label: string; value: string; href: string; brand?: string };
 
@@ -28,10 +27,6 @@ const networks = [
   socials.tiktok && { icon: 'tiktok', label: 'TikTok', value: handle(socials.tiktok), href: socials.tiktok },
   socials.x && { icon: 'x', label: 'X', value: handle(socials.x), href: socials.x },
 ].filter(Boolean) as Channel[];
-
-// Formspree si configuré, sinon la fonction Turso sur Vercel, sinon le client mail.
-const formAction =
-  profile.formEndpoint || (CONTACT_API ? `${import.meta.env.BASE_URL.replace(/\/$/, '')}/api/contact` : undefined);
 
 const external = (href: string) => (href.startsWith('http') ? { target: '_blank', rel: 'noopener' } : {});
 ---
@@ -92,7 +87,7 @@ const external = (href: string) => (href.startsWith('http') ? { target: '_blank'
       data-reveal
       data-contact-form
       data-email={profile.email}
-      action={formAction}
+      action={profile.formEndpoint || undefined}
       method="post"
     >
       <div class="field">
@@ -107,10 +102,11 @@ const external = (href: string) => (href.startsWith('http') ? { target: '_blank'
         <label for="message">Message</label>
         <textarea id="message" name="message" rows="5" maxlength="5000" required></textarea>
       </div>
-      <!-- Champ piège anti-spam : invisible pour les humains. -->
+      <!-- Formspree : objet de l'e-mail reçu, et champ piège anti-spam invisible pour les humains. -->
+      <input type="hidden" name="_subject" value="Nouveau message depuis le portfolio" />
       <div class="trap" aria-hidden="true">
-        <label for="website">Site web</label>
-        <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+        <label for="gotcha">Ne pas remplir</label>
+        <input id="gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
       </div>
       <button type="submit" class="btn btn-primary">
         Envoyer <Icon name="send" />

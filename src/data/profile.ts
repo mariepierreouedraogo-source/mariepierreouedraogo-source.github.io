@@ -42,7 +42,7 @@ export const profile = {
    * du formulaire sans ouvrir la messagerie du visiteur.
    * Vide = le formulaire ouvre le client mail avec le message pré-rempli.
    */
-  formEndpoint: '',
+  formEndpoint: 'https://formspree.io/f/xbglnqap',
 };
 
 /* ── À propos ─────────────────────────────────────────────── */
