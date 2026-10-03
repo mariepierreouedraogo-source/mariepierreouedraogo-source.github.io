@@ -28,7 +28,7 @@ export const profile = {
   email: 'mariepierreouedraogo@gmail.com',
   phone: '', // TODO (optionnel) ex. '+226 00 00 00 00'
   socials: {
-    github: '', // TODO ex. 'https://github.com/ton-pseudo'
+    github: 'https://github.com/mariepierreouedraogo-source',
     linkedin: '', // TODO ex. 'https://www.linkedin.com/in/ton-profil'
     whatsapp: 'https://wa.me/22677615628',
     facebook: 'https://www.facebook.com/share/19TV2rjpFd/',
