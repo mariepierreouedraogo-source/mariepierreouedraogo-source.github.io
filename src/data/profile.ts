@@ -23,14 +23,14 @@ export const profile = {
   role: 'Développement web & mobile · Réseaux informatiques · Programmation',
   tagline:
     'Je conçois des applications web et mobiles, et je mets en place les réseaux et les serveurs sur lesquels elles tournent.',
-  location: 'Ville, Pays', // TODO
+  location: 'Ouagadougou, Burkina Faso',
   availability: 'Disponible pour un stage, une alternance ou une mission', // TODO
   email: 'mariepierreouedraogo@gmail.com',
   phone: '', // TODO (optionnel) ex. '+226 00 00 00 00'
   socials: {
     github: 'https://github.com/mariepierreouedraogo-source',
     linkedin: '', // TODO ex. 'https://www.linkedin.com/in/ton-profil'
-    whatsapp: 'https://wa.me/22677615628',
+    whatsapp: 'https://wa.me/22663305312',
     facebook: 'https://www.facebook.com/share/19TV2rjpFd/',
     tiktok: 'https://www.tiktok.com/@stanboss17',
     x: 'https://x.com/MariePierreOud2',
@@ -195,13 +195,6 @@ export const projects: Project[] = [
     ],
     stack: ['Astro', 'TypeScript', 'CSS', 'GitHub Actions'],
   },
-  {
-    title: 'Application mobile (à compléter)', // TODO
-    category: 'mobile',
-    summary: 'Décris ici une application mobile que tu as réalisée : objectif, utilisateurs, fonctionnalités.',
-    highlights: ['Fonctionnalité clé n°1', 'Fonctionnalité clé n°2'],
-    stack: ['Flutter'],
-  },
 ];
 
 /* ── Parcours ─────────────────────────────────────────────── */
@@ -241,7 +234,6 @@ export const timeline: TimelineItem[] = [
 ];
 
 export const languages = [
-  // TODO
   { name: 'Français', level: 'Courant' },
-  { name: 'Anglais', level: 'Niveau à préciser' },
+  { name: 'Anglais', level: 'Courant' },
 ];
