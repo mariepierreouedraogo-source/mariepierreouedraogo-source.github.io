@@ -22,7 +22,7 @@ export const profile = {
   initials: 'MPO',
   role: 'Développement web & mobile · Réseaux informatiques · Programmation',
   tagline:
-    'Je conçois des applications web et mobiles, et je mets en place les réseaux et les serveurs sur lesquels elles tournent.',
+    'Je conçois des applications web et mobiles au Burkina Faso, et je mets en place les réseaux et les serveurs sur lesquels elles tournent.',
   location: 'Ouagadougou, Burkina Faso',
   availability: 'Disponible pour un stage, une alternance ou une mission', // TODO
   email: 'mariepierreouedraogo@gmail.com',
@@ -43,6 +43,25 @@ export const profile = {
    * Vide = le formulaire ouvre le client mail avec le message pré-rempli.
    */
   formEndpoint: 'https://formspree.io/f/xbglnqap',
+};
+
+/* ── Référencement (Google) ───────────────────────────────── */
+
+export const seo = {
+  /** Titre affiché dans les résultats Google (≈ 60 caractères visibles). */
+  title: 'Marie-Pierre Ouédraogo — Développement web & mobile au Burkina Faso',
+  /** Résumé affiché sous le titre dans Google (≈ 155 caractères). */
+  description:
+    "Marie-Pierre Ouédraogo : création d'applications web et mobiles, sites internet et réseaux informatiques à Ouagadougou, Burkina Faso.",
+  /** Variantes du nom tapées dans Google (sans accent, sans trait d'union…). */
+  alternateNames: ['Marie Pierre Ouédraogo', 'Marie-Pierre Ouedraogo', 'Marie Pierre Ouedraogo'],
+  city: 'Ouagadougou',
+  countryCode: 'BF',
+  /**
+   * Google Search Console → méthode « Balise HTML » : colle ici uniquement la
+   * valeur de content="…" de la balise fournie.
+   */
+  googleSiteVerification: '',
 };
 
 /* ── À propos ─────────────────────────────────────────────── */

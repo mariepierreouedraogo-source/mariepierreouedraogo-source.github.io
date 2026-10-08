@@ -3,32 +3,48 @@ import '@fontsource-variable/inter';
 import '@fontsource-variable/space-grotesk';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
-import { profile, pillars } from '../data/profile';
+import { profile, pillars, seo } from '../data/profile';
 
 interface Props {
   title?: string;
   description?: string;
+  /** Exclut la page des résultats de recherche (ex. 404). */
+  noindex?: boolean;
 }
 
-const {
-  title = `${profile.name} — Développement web, mobile & réseaux`,
-  description = profile.tagline,
-} = Astro.props;
+const { title = seo.title, description = seo.description, noindex = false } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const home = new URL(`${base}/`, Astro.site).href;
 
+// Données structurées : aident Google à relier le site à la personne, au lieu et aux réseaux.
 const sameAs = Object.values(profile.socials).filter(Boolean);
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: profile.name,
-  jobTitle: profile.role,
-  description: profile.tagline,
-  url: canonical.href,
-  email: `mailto:${profile.email}`,
-  knowsAbout: pillars.flatMap((p) => p.groups.flatMap((g) => g.items)),
-  ...(sameAs.length ? { sameAs } : {}),
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': `${home}#personne`,
+      name: profile.name,
+      alternateName: seo.alternateNames,
+      jobTitle: profile.role,
+      description: seo.description,
+      url: home,
+      email: `mailto:${profile.email}`,
+      address: { '@type': 'PostalAddress', addressLocality: seo.city, addressCountry: seo.countryCode },
+      knowsAbout: pillars.flatMap((p) => p.groups.flatMap((g) => g.items)),
+      ...(sameAs.length ? { sameAs } : {}),
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${home}#site`,
+      name: profile.name,
+      url: home,
+      inLanguage: 'fr',
+      publisher: { '@id': `${home}#personne` },
+    },
+  ],
 };
 ---
 
@@ -40,7 +56,9 @@ const jsonLd = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content={profile.name} />
-    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    <link rel="sitemap" href={`${base}/sitemap.xml`} />
+    {seo.googleSiteVerification && <meta name="google-site-verification" content={seo.googleSiteVerification} />}
     <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
     <meta name="theme-color" content="#0a0f1a" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#f7f8fb" media="(prefers-color-scheme: light)" />
@@ -50,6 +68,7 @@ const jsonLd = {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={profile.name} />
     <meta name="twitter:card" content="summary" />
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
