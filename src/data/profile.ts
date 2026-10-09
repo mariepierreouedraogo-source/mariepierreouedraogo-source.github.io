@@ -61,7 +61,7 @@ export const seo = {
    * Google Search Console → méthode « Balise HTML » : colle ici uniquement la
    * valeur de content="…" de la balise fournie.
    */
-  googleSiteVerification: '',
+  googleSiteVerification: 'ZFMn9Ztj7lyv405uNlcTsIN0U4HfnrB23Sk_luIEhw8',
 };
 
 /* ── À propos ─────────────────────────────────────────────── */
